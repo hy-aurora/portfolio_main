@@ -14,9 +14,12 @@ interface BlurFadeProps {
   delay?: number;
   yOffset?: number;
   inView?: boolean;
-  inViewMargin?: string;
+  /** IntersectionObserver root margin (top right bottom left). Defaults to triggering 50px before bottom enters viewport. */
+  inViewMargin?: RootMargin;
   blur?: string;
 }
+// Root margin must be 4 values for IntersectionObserver; align with framer-motion's MarginType.
+type RootMargin = `${number}px ${number}px ${number}px ${number}px`;
 const BlurFade = ({
   children,
   className,
@@ -25,7 +28,8 @@ const BlurFade = ({
   delay = 0,
   yOffset = 6,
   inView = false,
-  inViewMargin = "-50px",
+  // Use 4-part rootMargin; negative bottom value triggers animation earlier.
+  inViewMargin = "0px 0px -50px 0px",
   blur = "6px",
 }: BlurFadeProps) => {
   const ref = useRef(null);
